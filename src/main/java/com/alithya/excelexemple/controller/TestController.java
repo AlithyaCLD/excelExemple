@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -14,7 +15,7 @@ import com.alithya.excelexemple.service.ExcelService;
 public class TestController {
 
     private ExcelService excelService;
-    
+
     @Autowired
     public TestController(ExcelService excelService) {
         this.excelService = excelService;
@@ -22,10 +23,18 @@ public class TestController {
 
     @GetMapping(path = "/calculate")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> calculate(@RequestParam(name="optionA") String optionA, 
-    		@RequestParam(name="optionB") String optionB, 
-    		@RequestParam(name="optionC") String optionC) {
-    	return new ResponseEntity<>(excelService.calculate(optionA, optionB, optionC), HttpStatus.OK);
+    public ResponseEntity<String> calculate(@RequestParam(name = "optionA") String optionA,
+            @RequestParam(name = "optionB") String optionB,
+            @RequestParam(name = "optionC") String optionC) {
+        return new ResponseEntity<>(excelService.calculate(optionA, optionB, optionC), HttpStatus.OK);
     }
-    
+
+    @GetMapping(path = "/calculateUsing/{cell}")
+    public ResponseEntity<String> calculateUsing(@PathVariable String cell,
+            @RequestParam(name = "optionA") String optionA,
+            @RequestParam(name = "optionB") String optionB,
+            @RequestParam(name = "optionC") String optionC) {
+        return new ResponseEntity<>(excelService.calculateUsing(cell, optionA, optionB, optionC), HttpStatus.OK);
+    }
+
 }
